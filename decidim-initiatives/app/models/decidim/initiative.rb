@@ -184,7 +184,7 @@ module Decidim
     #
     # RETURNS STRING
     def author_avatar_url
-      author.avatar&.url ||
+      author.attached_uploader(:avatar).url(host: organization.host) ||
         ActionController::Base.helpers.asset_path("decidim/default-avatar.svg")
     end
 
