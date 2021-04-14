@@ -8,4 +8,5 @@
 //= link decidim/elections/voter/setup-preview.js
 //= link decidim/elections/voter/setup-vote.js
 //= link decidim/elections/voter/verify-vote.js
+//= link decidim/elections/onboarding.js
 //= link_tree ../images/decidim
