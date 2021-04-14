@@ -47,7 +47,7 @@ module Decidim
       scope :upcoming, -> { where(arel_table[:end_time].gteq(Time.current)) }
 
       scope :visible_meeting_for, lambda { |user|
-        (all.distinct if user&.admin?) ||
+        (all.published.distinct if user&.admin?) ||
           if user.present?
             spaces = %w(assembly participatory_process)
             spaces << "conference" if defined?(Decidim::Conference)
@@ -76,9 +76,10 @@ module Decidim
                 #{user_role_queries.compact.join(" UNION ")}
               )
             ", false, true, user.id, user.id, *user_role_queries.compact.map { user.id })
+              .published
               .distinct
           else
-            visible
+            published.visible
           end
       }
 
