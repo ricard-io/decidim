@@ -12,7 +12,11 @@ module Decidim
 
       routes do
         resources :polling_officers, path: "/", only: [:index] do
-          resources :results, only: [:new, :create], path_names: { new: "new/:election_id" }
+          resources :elections, only: [:index] do
+            resource :closure do
+              get :total_people, defaults: { format: "js" }
+            end
+          end
         end
       end
 
@@ -28,6 +32,12 @@ module Decidim
                         active: :inclusive,
                         if: Decidim::Votings::PollingOfficer.polling_officer?(current_user)
         end
+      end
+
+      initializer "decidim_votings_polling_officer_zone.assets" do |app|
+        app.config.assets.precompile += %w(
+          decidim_votings_polling_officer_zone_manifest.js
+        )
       end
     end
   end
